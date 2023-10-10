@@ -1,6 +1,6 @@
 ##################################
 ### Run when a schedule failed ###
-##################################
+
 restart_when_failed:
   name: Restarts the scheduled run when it failed
   runs-on: ubuntu-latest
