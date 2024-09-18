@@ -29,3 +29,4 @@ index 93cbc7d148..5aead2662b 100644
 +  $(Device/tplink-16mlzma)
    SOC := qca9533
    DEVICE_MODEL := TL-WR841N/ND
+   DEVICE_VARIANT := v9
