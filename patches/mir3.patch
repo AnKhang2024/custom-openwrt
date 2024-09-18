@@ -1,15 +1,3 @@
-diff --git a/package/boot/uboot-envtools/files/ramips b/package/boot/uboot-envtools/files/ramips
-index 97e9fc2b1c..52c3c9357a 100644
---- a/package/boot/uboot-envtools/files/ramips
-+++ b/package/boot/uboot-envtools/files/ramips
-@@ -127,6 +127,7 @@ xiaomi,mi-router-3g|\
- xiaomi,mi-router-3-pro|\
- xiaomi,mi-router-4|\
- xiaomi,mi-router-ac2100|\
-+xiaomi,miwifi-r3|\
- xiaomi,redmi-router-ac2100)
-        ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x1000" "0x20000"
-        ubootenv_add_uci_sys_config "/dev/mtd2" "0x0" "0x4000" "0x20000"
 diff --git a/target/linux/ramips/image/mt7620.mk b/target/linux/ramips/image/mt7620.mk
 index 9f3a8dce0e..7913da62b0 100644
 --- a/target/linux/ramips/image/mt7620.mk
@@ -89,3 +77,16 @@ index 6dd7fc7cef..d0a92f952d 100755
         *)
                 default_do_upgrade "$1"
                 ;;
+diff --git a/target/linux/ramips/mt7620/target.mk b/target/linux/ramips/mt7620/target.mk
+index 34488f95af..1d1d281a0f 100644
+--- a/target/linux/ramips/mt7620/target.mk
++++ b/target/linux/ramips/mt7620/target.mk
+@@ -4,7 +4,7 @@
+
+ SUBTARGET:=mt7620
+ BOARDNAME:=MT7620 based boards
+-FEATURES+=usb ramdisk
++FEATURES+=usb nand ramdisk
+ CPU_TYPE:=24kc
+
+ DEFAULT_PACKAGES += kmod-rt2800-soc wpad-basic-mbedtls swconfig
