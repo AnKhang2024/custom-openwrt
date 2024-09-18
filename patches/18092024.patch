@@ -2579,3 +2579,140 @@ index 0000000000..c932d2f5a9
 + obj-$(CONFIG_MTD_VMU)         += vmu-flash.o
 + obj-$(CONFIG_MTD_LANTIQ)      += lantiq-flash.o
 ++obj-$(CONFIG_MTD_NAND_MT7620) += ralink_nand.o
+diff --git a/package/boot/uboot-envtools/files/ramips b/package/boot/uboot-envtools/files/ramips
+index 97e9fc2b1c..52c3c9357a 100644
+--- a/package/boot/uboot-envtools/files/ramips
++++ b/package/boot/uboot-envtools/files/ramips
+@@ -127,6 +127,7 @@ xiaomi,mi-router-3g|\
+ xiaomi,mi-router-3-pro|\
+ xiaomi,mi-router-4|\
+ xiaomi,mi-router-ac2100|\
++xiaomi,miwifi-r3|\
+ xiaomi,redmi-router-ac2100)
+        ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x1000" "0x20000"
+        ubootenv_add_uci_sys_config "/dev/mtd2" "0x0" "0x4000" "0x20000"
+diff --git a/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi b/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
+index 29633865b6..83b144cf21 100644
+--- a/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
++++ b/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
+@@ -106,12 +106,12 @@
+                        partition@20000 {
+                                compatible = "tplink,firmware";
+                                label = "firmware";
+-                               reg = <0x020000 0x3d0000>;
++                               reg = <0x020000 0xfd0000>;
+                        };
+
+-                       partition@3f0000 {
++                       partition@ff0000 {
+                                label = "art";
+-                               reg = <0x3f0000 0x010000>;
++                               reg = <0xff0000 0x010000>;
+                                read-only;
+
+                                nvmem-layout {
+diff --git a/target/linux/ath79/image/tiny-tp-link.mk b/target/linux/ath79/image/tiny-tp-link.mk
+index 93cbc7d148..5aead2662b 100644
+--- a/target/linux/ath79/image/tiny-tp-link.mk
++++ b/target/linux/ath79/image/tiny-tp-link.mk
+@@ -394,7 +394,7 @@ endef
+ TARGET_DEVICES += tplink_tl-wr841-v8
+
+ define Device/tplink_tl-wr841-v9
+-  $(Device/tplink-4mlzma)
++  $(Device/tplink-16mlzma)
+   SOC := qca9533
+   DEVICE_MODEL := TL-WR841N/ND
+   DEVICE_VARIANT := v9
+diff --git a/target/linux/ramips/image/mt7620.mk b/target/linux/ramips/image/mt7620.mk
+index 9f3a8dce0e..7913da62b0 100644
+--- a/target/linux/ramips/image/mt7620.mk
++++ b/target/linux/ramips/image/mt7620.mk
+@@ -1423,6 +1423,27 @@ define Device/youku_x2
+ endef
+ TARGET_DEVICES += youku_x2
+
++define Device/xiaomi_miwifi-r3
++  SOC := mt7620a
++  BLOCKSIZE := 128k
++  PAGESIZE := 2048
++  KERNEL_SIZE := 4096k
++  IMAGE_SIZE := 32768k
++  UBINIZE_OPTS := -E 5
++  IMAGES += kernel1.bin rootfs0.bin breed-factory.bin factory.bin
++  IMAGE/kernel1.bin := append-kernel | check-size $$$$(KERNEL_SIZE)
++  IMAGE/rootfs0.bin := append-ubi | check-size
++  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
++  IMAGE/factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | check-size
++  IMAGE/breed-factory.bin := append-kernel | pad-to $$(KERNEL_SIZE) | \
++                            append-kernel | pad-to $$(KERNEL_SIZE) | \
++                            append-ubi | check-size
++  DEVICE_VENDOR := Xiaomi
++  DEVICE_MODEL := Mi Router R3
++  DEVICE_PACKAGES := kmod-mt76x2 kmod-usb2 kmod-usb-ohci uboot-envtools
++endef
++TARGET_DEVICES += xiaomi_miwifi-r3
++
+ define Device/youku_yk-l1
+   SOC := mt7620a
+   IMAGE_SIZE := 32448k
+diff --git a/target/linux/ramips/mt7620/base-files/etc/board.d/02_network b/target/linux/ramips/mt7620/base-files/etc/board.d/02_network
+index 577f77cb93..53f2db5b74 100644
+--- a/target/linux/ramips/mt7620/base-files/etc/board.d/02_network
++++ b/target/linux/ramips/mt7620/base-files/etc/board.d/02_network
+@@ -1,3 +1,4 @@
++9272
+
+ . /lib/functions.sh
+ . /lib/functions/uci-defaults.sh
+@@ -202,6 +203,10 @@ ramips_setup_interfaces()
+                ucidef_add_switch "switch0" \
+                        "0:lan:2" "1:lan:1" "4:wan" "6@eth0"
+                ;;
++       xiaomi,miwifi-r3)
++               ucidef_add_switch "switch0" \
++                       "1:lan" "4:lan" "0:wan" "6@eth0"
++               ::
+        lenovo,newifi-y1s)
+                ucidef_add_switch "switch0" \
+                        "1:lan:4" "2:lan:3" "4:lan:2" "5:lan:1" "0:wan" "6@eth0"
+@@ -425,6 +430,10 @@ ramips_setup_macs()
+                wan_mac=$(mtd_get_mac_binary Factory 0x2e)
+                label_mac=$wan_mac
+                ;;
++       xiaomi,miwifi-r3)
++               wan_mac=$(mtd_get_mac_binary factory 0x28)
++               lan_mac=$(macaddr_setbit_la "$wan_mac")
++               ;;
+        tplink,archer-c2-v1|\
+        tplink,archer-c20-v1|\
+        tplink,archer-c20i|\
+diff --git a/target/linux/ramips/mt7620/base-files/lib/upgrade/platform.sh b/target/linux/ramips/mt7620/base-files/lib/upgrade/platform.sh
+index 6dd7fc7cef..d0a92f952d 100755
+--- a/target/linux/ramips/mt7620/base-files/lib/upgrade/platform.sh
++++ b/target/linux/ramips/mt7620/base-files/lib/upgrade/platform.sh
+@@ -38,6 +38,11 @@ platform_do_upgrade() {
+                                of=/dev/mtdblock$idx
+                default_do_upgrade "$1"
+                ;;
++       xiaomi,miwifi-r3)
++               # this make it compatible with breed
++               dd if=/dev/mtd0 bs=64 count=1 2>/dev/null | grep -qi breed && CI_KERNPART_EXT="kernel_stock"
++               nand_do_upgrade "$1"
++               ;;
+        *)
+                default_do_upgrade "$1"
+                ;;
+diff --git a/target/linux/ramips/mt7620/target.mk b/target/linux/ramips/mt7620/target.mk
+index 34488f95af..1d1d281a0f 100644
+--- a/target/linux/ramips/mt7620/target.mk
++++ b/target/linux/ramips/mt7620/target.mk
+@@ -4,7 +4,7 @@
+
+ SUBTARGET:=mt7620
+ BOARDNAME:=MT7620 based boards
+-FEATURES+=usb ramdisk
++FEATURES+=usb nand ramdisk
+ CPU_TYPE:=24kc
+
+ DEFAULT_PACKAGES += kmod-rt2800-soc wpad-basic-mbedtls swconfig
