@@ -3286,7 +3286,7 @@ CONFIG_LUA_ECO_MBEDTLS=y
 #
 # Ruby
 #
-CONFIG_PACKAGE_ruby=y
+# CONFIG_PACKAGE_ruby is not set
 
 #
 # Standard Library
