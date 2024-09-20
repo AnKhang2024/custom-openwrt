@@ -12,4 +12,4 @@
 
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
-sed -i 's/3.3.4/3.3.2/g' feeds/packages/lang/ruby/Makefile
+sed -i 's/3.3.4/3.2.5/g' feeds/packages/lang/ruby/Makefile
