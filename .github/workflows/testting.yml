@@ -20,11 +20,11 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/openwrt/openwrt.git
-  REPO_BRANCH: main
-  FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: .config-gdock
-  DIY_P1_SH: diy-part1.sh
+  # REPO_URL: https://github.com/openwrt/openwrt.git
+  # REPO_BRANCH: main
+  # FEEDS_CONF: feeds.conf.default
+  # CONFIG_FILE: .config-gdock
+  # DIY_P1_SH: diy-part1.sh
   #DIY_P2_SH: diy-part2.sh
   #by default used .config for build from repo
   #if your repo not contain .config, you may download it from direct url setting by ALT_CONFIG_URL variable
@@ -79,7 +79,9 @@ jobs:
 
     # - name: Install feeds
     #   run: cd openwrt && ./scripts/feeds install -a
-
+    - name: create .config file
+      run: cd openwrt && toutch .config
+      
     - name: Load custom configuration
       env:
         check: 0
