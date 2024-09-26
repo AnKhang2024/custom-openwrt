@@ -80,6 +80,7 @@ jobs:
     # - name: Install feeds
     #   run: cd openwrt && ./scripts/feeds install -a
     - name: create .config file
+      working-directory: /workdir
       run: cd openwrt && touch .config
       
     - name: Load custom configuration
