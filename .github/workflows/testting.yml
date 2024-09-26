@@ -25,7 +25,7 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config-gdock
   DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  #DIY_P2_SH: diy-part2.sh
   #by default used .config for build from repo
   #if your repo not contain .config, you may download it from direct url setting by ALT_CONFIG_URL variable
   #if ALT_CONFIG_URL commented and repo not contain .config - use default for mt7620
@@ -60,12 +60,12 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
         
-    - name: Clone source code
-      working-directory: /workdir
-      run: |
-        df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+    # - name: Clone source code
+    #   working-directory: /workdir
+    #   run: |
+    #     df -hT $PWD
+    #     git clone $REPO_URL -b $REPO_BRANCH openwrt
+    #     ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
     # - name: Load custom feeds
     #   run: |
@@ -104,21 +104,21 @@ jobs:
              fi
         fi
 
-    - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-      env:
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    # - name: SSH connection to Actions
+    #   uses: P3TERX/ssh2actions@v1.0.0
+    #   if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+    #   env:
+    #     TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    #     TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    - name: Download package
-      id: package
-      run: |
-        cd openwrt
-        make defconfig
-        make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
+    # - name: Download package
+    #   id: package
+    #   run: |
+    #     cd openwrt
+    #     make defconfig
+    #     make download -j8
+    #     find dl -size -1024c -exec ls -l {} \;
+    #     find dl -size -1024c -exec rm -f {} \;
 
     - name: Read config target
       run: |
