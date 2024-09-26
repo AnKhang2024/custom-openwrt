@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Testing
+name: TP-LINK 841 openwrt
 
 on:
   repository_dispatch:
@@ -20,12 +20,13 @@ on:
         default: 'false'
 
 env:
-  # REPO_URL: https://github.com/openwrt/openwrt.git
-  # REPO_BRANCH: main
-  # FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: .config-gdock
-  # DIY_P1_SH: diy-part1.sh
-  #DIY_P2_SH: diy-part2.sh
+  REPO_URL: https://github.com/openwrt/openwrt.git
+  REPO_BRANCH: main
+  FEEDS_CONF: feeds.conf.default
+  CONFIG_FILE: .config-tplink841
+  PATCHES_PATH: patches
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
   #by default used .config for build from repo
   #if your repo not contain .config, you may download it from direct url setting by ALT_CONFIG_URL variable
   #if ALT_CONFIG_URL commented and repo not contain .config - use default for mt7620
@@ -37,13 +38,13 @@ env:
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Ho_Chi_Minh
-   
+ 
 jobs:
           
   build:
     runs-on: ubuntu-latest
     steps: 
-
+      
     - name: Checkout
       uses: actions/checkout@main
     
@@ -57,15 +58,15 @@ jobs:
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir/openwrt
-        sudo chown $USER:$GROUPS /workdir/openwrt
-        
-    # - name: Clone source code
-    #   working-directory: /workdir
-    #   run: |
-    #     df -hT $PWD
-    #     git clone $REPO_URL -b $REPO_BRANCH openwrt
-    #     ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
     # - name: Load custom feeds
     #   run: |
@@ -76,13 +77,10 @@ jobs:
 
     # - name: Update feeds
     #   run: cd openwrt && ./scripts/feeds update -a
-
+    
     # - name: Install feeds
     #   run: cd openwrt && ./scripts/feeds install -a
-    - name: create .config file
-      working-directory: /workdir
-      run: cd openwrt && touch .config
-      
+
     - name: Load custom configuration
       env:
         check: 0
@@ -106,7 +104,16 @@ jobs:
                   echo "use default .config for mt7620 in openwrt, url not set and .config in repo don't exist";
              fi
         fi
-
+    #     chmod +x $DIY_P2_SH
+    #     cd openwrt
+    #     $GITHUB_WORKSPACE/$DIY_P2_SH
+    # - name: Apply patches
+    #   run: |
+    #     [ -d $PATCHES_PATH ] && mv $PATCHES_PATH openwrt/$PATCHES_PATH
+    #     cd openwrt
+    #     [ -d $PATCHES_PATH ] && for FILE in $(ls $PATCHES_PATH | grep 18092024.patch); do git apply --check $PATCHES_PATH/$FILE; git apply -v --ignore-whitespace $PATCHES_PATH/$FILE; done
+    #     git status -s
+        
     # - name: SSH connection to Actions
     #   uses: P3TERX/ssh2actions@v1.0.0
     #   if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -114,15 +121,14 @@ jobs:
     #     TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     #     TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-    # - name: Download package
-    #   id: package
-    #   run: |
-    #     cd openwrt
-    #     make defconfig
-    #     make download -j8
-    #     find dl -size -1024c -exec ls -l {} \;
-    #     find dl -size -1024c -exec rm -f {} \;
-
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
     - name: Read config target
       run: |
         cd openwrt
