@@ -129,8 +129,8 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/^CONFIG_TARGET_(.*)_(.*)_DEVICE_(.*)=y/\1/' > ARCH_NAME
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/^CONFIG_TARGET_(.*)_(.*)_DEVICE_(.*)=y/\2/' > CPU_NAME
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/^CONFIG_TARGET_(.*)_(.*)_DEVICE_(.*)=y/\3/' > DEVICE_NAME
-        [ -s ARCH_NAME ] && echo "ARCH_NAME=<<EOF" >> $GITHUB_ENV 
-        echo "ARCH_NAME=$(cat ARCH_NAME)" >> $GITHUB_EVN
+        [ -s ARCH_NAME ] && echo "ARCH_NAME<<EOF" >> $GITHUB_ENV 
+        echo "$(cat ARCH_NAME)" >> $GITHUB_EVN
         echo "EOF" >> $GITHUB_ENV
         [ -s CPU_NAME ] && echo "CPU_NAME<<EOF" >> $GITHUB_ENV
         echo "$(cat CPU_NAME)" >> $GITHUB_EVN
