@@ -103,9 +103,6 @@ jobs:
                   echo "use default .config for mt7620 in openwrt, url not set and .config in repo don't exist";
              fi
         fi
-        # chmod +x $DIY_P2_SH
-        # cd openwrt
-        # $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
