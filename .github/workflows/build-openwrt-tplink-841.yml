@@ -133,7 +133,7 @@ jobs:
     # - name: Read config target
     #   run: |
     #     cd openwrt
-    #     grep '^CONFIG_TARGET_ath79_tiny_DEVICE_.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+    #     grep '^CONFIG_TARGET_ath79_tiny_DEVICE_.*=y' .config | sed -r 'CONFIG_TARGET_DEVICE_ath79_tiny_DEVICE_tplink_tl-wr841-v9' > DEVICE_NAME
     #     [ -s DEVICE_NAME ] && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
     #     echo -e "$(cat DEVICE_NAME)"
     
