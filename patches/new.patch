@@ -1,3 +1,9 @@
+commit fa0a157c5a3082e4f4e9bc9a86b8c62ec4d45d04
+Author: Thanh Phat <baonq@live.com>
+Date:   Sat Sep 28 20:55:18 2024 +0700
+
+    add Xiaomi Mir3 / TP-Link 841 V9 (16Mb flash/64M ram) support
+
 diff --git a/package/boot/uboot-envtools/files/ramips b/package/boot/uboot-envtools/files/ramips
 index 341687625c..d8f4d07246 100644
 --- a/package/boot/uboot-envtools/files/ramips
@@ -404,3 +410,37 @@ index 577f77cb93..9ddfd21232 100644
  	zyxel,keenetic-lite-iii-a)
  		lan_mac=$(mtd_get_mac_binary RF-EEPROM 0x4)
  		wan_mac=$(mtd_get_mac_binary RF-EEPROM 0x28)
+diff --git a/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi b/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
+index 29633865b6..83b144cf21 100644
+--- a/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
++++ b/target/linux/ath79/dts/qca9533_tplink_tl-wr841.dtsi
+@@ -106,12 +106,12 @@
+                        partition@20000 {
+                                compatible = "tplink,firmware";
+                                label = "firmware";
+-                               reg = <0x020000 0x3d0000>;
++                               reg = <0x020000 0xfd0000>;
+                        };
+
+-                       partition@3f0000 {
++                       partition@ff0000 {
+                                label = "art";
+-                               reg = <0x3f0000 0x010000>;
++                               reg = <0xff0000 0x010000>;
+                                read-only;
+
+                                nvmem-layout {
+diff --git a/target/linux/ath79/image/tiny-tp-link.mk b/target/linux/ath79/image/tiny-tp-link.mk
+index 93cbc7d148..5aead2662b 100644
+--- a/target/linux/ath79/image/tiny-tp-link.mk
++++ b/target/linux/ath79/image/tiny-tp-link.mk
+@@ -394,7 +394,7 @@ endef
+ TARGET_DEVICES += tplink_tl-wr841-v8
+
+ define Device/tplink_tl-wr841-v9
+-  $(Device/tplink-4mlzma)
++  $(Device/tplink-16mlzma)
+   SOC := qca9533
+   DEVICE_MODEL := TL-WR841N/ND
+   DEVICE_VARIANT := v9
+
