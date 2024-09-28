@@ -2,7 +2,7 @@ commit fa0a157c5a3082e4f4e9bc9a86b8c62ec4d45d04
 Author: Thanh Phat <baonq@live.com>
 Date:   Sat Sep 28 20:55:18 2024 +0700
 
-    add Xiaomi Mir3 support
+    add Xiaomi Mir3 / TP-Link 841 V9 (16Mb flash/64M ram) support
 
 diff --git a/package/boot/uboot-envtools/files/ramips b/package/boot/uboot-envtools/files/ramips
 index 341687625c..d8f4d07246 100644
