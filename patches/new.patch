@@ -140,10 +140,10 @@ index 0000000000..de8d002376
 +
 +         When built as a module, it will be called pismo.ko
 +
-++config MTD_NAND_MT7620
-++      tristate "Support for NAND on Mediatek MT7620"
-++      depends on RALINK && SOC_MT7620
-++
++config MTD_NAND_MT7620
++      tristate "Support for NAND on Mediatek MT7620"
++      depends on RALINK && SOC_MT7620
++
 + endmenu
 +--- a/drivers/mtd/maps/Makefile
 ++++ b/drivers/mtd/maps/Makefile
