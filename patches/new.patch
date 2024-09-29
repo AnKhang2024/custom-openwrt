@@ -2,8 +2,8 @@ commit 7455d154bf9554ad03c7551c22ba74c6273ef654
 Author: Thanh Phat <baonq@live.com>
 Date:   Sun Sep 29 00:03:52 2024 +0700
 
-    add Xiaomi Mir3 / 841 support
-
+    add Xiaomi Mir3 
+    
 diff --git a/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts b/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
 new file mode 100644
 index 0000000000..a43f243727
