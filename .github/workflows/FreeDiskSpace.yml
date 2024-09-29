@@ -1,6 +1,8 @@
 name: Free Disk Space (Ubuntu)
-on: push
-
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: 30 05 * * 1
 jobs:
   free-disk-space:
     runs-on: ubuntu-latest
