@@ -89,7 +89,7 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
     - name: Uninstall feeds
-      run: cd openwrt && ./scripts/feeds uninstall  freeswitch Uninstalling package 'freeswitch'
+      run: cd openwrt && ./scripts/feeds uninstall freeswitch
     - name: Load custom configuration
       env:
         check: 0
