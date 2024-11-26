@@ -243,10 +243,7 @@ index 0000000000..feba5046ee
 ++		};
 ++	};
 ++};
-diff --git a/target/linux/ramips/files/drivers/mtd/maps/.ralink_nand.c.swo b/target/linux/ramips/files/drivers/mtd/maps/.ralink_nand.c.swo
-new file mode 100644
-index 0000000000..4f83ba7d27
-Binary files /dev/null and b/target/linux/ramips/files/drivers/mtd/maps/.ralink_nand.c.swo differ
+
 diff --git a/target/linux/ramips/files/drivers/mtd/maps/ralink_nand.c b/target/linux/ramips/files/drivers/mtd/maps/ralink_nand.c
 new file mode 100644
 index 0000000000..a04b511a52
