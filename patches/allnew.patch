@@ -2556,11 +2556,11 @@ index 0000000000..c932d2f5a9
 + obj-$(CONFIG_MTD_VMU)		+= vmu-flash.o
 + obj-$(CONFIG_MTD_LANTIQ)	+= lantiq-flash.o
 ++obj-$(CONFIG_MTD_NAND_MT7620)	+= ralink_nand.o
-diff --git "a/target/linux/ramips/dts/\342\200\216mt7620a_xiaomi_miwifi-r3.dts" "b/target/linux/ramips/dts/\342\200\216mt7620a_xiaomi_miwifi-r3.dts"
+diff --git a/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts b/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
 new file mode 100644
 index 0000000000..a43f243727
 --- /dev/null
-+++ "b/target/linux/ramips/dts/\342\200\216mt7620a_xiaomi_miwifi-r3.dts"
++++ b/target/linux/ramips/dts/mt7620a_xiaomi_miwifi-r3.dts
 @@ -0,0 +1,194 @@
 +/dts-v1/;
 +
