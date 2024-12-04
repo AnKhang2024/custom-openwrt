@@ -1,1 +1,1 @@
-./scripts/feeds uninstall  freeswitch Uninstalling package 'freeswitch'
+# ./scripts/feeds uninstall freeswitch Uninstalling package 'freeswitch'
