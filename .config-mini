@@ -2789,7 +2789,7 @@ CONFIG_BATMAN_ADV_MCAST=y
 # CONFIG_PACKAGE_kmod-keys-encrypted is not set
 # CONFIG_PACKAGE_kmod-keys-trusted is not set
 # CONFIG_PACKAGE_kmod-lkdtm is not set
-# CONFIG_PACKAGE_kmod-lp is not set
+CONFIG_PACKAGE_kmod-lp=y
 # CONFIG_PACKAGE_kmod-mhi-bus is not set
 # CONFIG_PACKAGE_kmod-mhi-pci-generic is not set
 # CONFIG_PACKAGE_kmod-mmc is not set
@@ -2908,7 +2908,7 @@ CONFIG_BATMAN_ADV_MCAST=y
 # CONFIG_PACKAGE_kmod-usb-net-sr9700 is not set
 # CONFIG_PACKAGE_kmod-usb-ohci is not set
 # CONFIG_PACKAGE_kmod-usb-ohci-pci is not set
-# CONFIG_PACKAGE_kmod-usb-printer is not set
+CONFIG_PACKAGE_kmod-usb-printer=y
 # CONFIG_PACKAGE_kmod-usb-serial is not set
 # CONFIG_PACKAGE_kmod-usb-serial-ark3116 is not set
 # CONFIG_PACKAGE_kmod-usb-serial-belkin is not set
