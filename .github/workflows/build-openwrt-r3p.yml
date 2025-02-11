@@ -54,9 +54,9 @@ jobs:
       run: npm install -g bats
     - name: install bats
       run: bats -v
-    # - name: Clean Up Docker Images
-    #   run: |
-    #     docker rmi $(docker images -q)    
+    - name: Clean Up Docker Images
+      run: |
+        docker rmi $(docker images -q)    
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
