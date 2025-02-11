@@ -13,7 +13,7 @@ name: Update Checker
 
 env:
   REPO_URL: https://github.com/openwrt/openwrt.git
-  REPO_BRANCH: main
+  REPO_BRANCH: openwrt-24.10
   TZ: Asia/Ho_Chi_Minh
 
 on:
@@ -23,7 +23,7 @@ on:
   
 jobs:
   check:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
@@ -37,12 +37,16 @@ jobs:
       run: npm install -g bats
     - name: install bats
       run: bats -v
+    # - name: Get Commit Hash
+    #   id: getHash
+    #   run: |
+    #     git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+    #     echo "::set-output name=commitHash::$(git rev-parse HEAD)"
     - name: Get Commit Hash
       id: getHash
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        echo "::set-output name=commitHash::$(git rev-parse HEAD)"
-
+        echo "commitHash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT        
     - name: Compare Commit Hash
       id: cacheHash
       uses: actions/cache@v4
