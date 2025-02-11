@@ -41,9 +41,7 @@ jobs:
       id: getHash
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-    - name: Set output
-      run: "ame=commitHash::$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-#       echo "::set-output name=commitHash::$(git rev-parse HEAD)"
+        echo "::set-output name=commitHash::$(git rev-parse HEAD)"
 
     - name: Compare Commit Hash
       id: cacheHash
